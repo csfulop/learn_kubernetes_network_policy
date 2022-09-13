@@ -19,7 +19,7 @@ kind: Service
 metadata:
   labels:
     role: web1
-  name: web1-service
+  name: web1
 spec:
   type: NodePort
   selector:
@@ -49,7 +49,7 @@ kind: Service
 metadata:
   labels:
     role: web2
-  name: web2-service
+  name: web2
 spec:
   type: NodePort
   selector:
@@ -79,7 +79,7 @@ kind: Service
 metadata:
   labels:
     role: web3
-  name: web3-service
+  name: web3
 spec:
   type: NodePort
   selector:
@@ -99,8 +99,34 @@ spec:
       role: web1
   policyTypes:
     - Ingress
+    - Egress
   ingress:
     - from:
         - podSelector:
             matchLabels:
               role: web2
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              role: web3
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns-access
+spec:
+  podSelector:
+    matchLabels: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: kube-system
+  - ports:
+    - port: 53
+      protocol: UDP
+    - port: 53
+      protocol: TCP
