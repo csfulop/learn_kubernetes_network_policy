@@ -68,4 +68,9 @@ check_nok
 echo "Should succeed:"
 kubectl -n $NS exec -it web1 -- curl --connect-timeout 5 http://web3
 check_ok
+
+
+kubectl -n $NS delete -f manifest.yml
+minikube stop
+minikube delete
 ```
