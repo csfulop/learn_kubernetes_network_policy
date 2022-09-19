@@ -5,7 +5,7 @@ See:
 
 ```
 minikube start
-NS=fcs
+export NS=fcs
 kubectl create ns $NS
 kubectl -n $NS apply -f manifest.yml
 
@@ -71,6 +71,7 @@ check_ok
 
 
 kubectl -n $NS delete -f manifest.yml
+kubectl delete ns $NS
 minikube stop
 minikube delete
 ```

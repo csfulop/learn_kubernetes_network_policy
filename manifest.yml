@@ -92,7 +92,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: test-network-policy
+  name: network-policy-web1
 spec:
   podSelector:
     matchLabels:
@@ -110,6 +110,22 @@ spec:
         - podSelector:
             matchLabels:
               role: web3
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: network-policy-web2
+spec:
+  podSelector:
+    matchLabels:
+      role: web2
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              role: web1
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
